@@ -1,3 +1,3 @@
-from .models import Advertise
+from .models import Carpool, CompletedCarpool, Caution
 from rest_framework import serializers
 
