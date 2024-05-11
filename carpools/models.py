@@ -18,6 +18,7 @@ class Carpool(models.Model):
     open_kakao = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     end_carpool = models.BooleanField(default=False)
+    carpool_date = models.DateTimeField()
 
 class CompletedCarpool(models.Model):
     client_name = models.CharField(max_length=255)
