@@ -27,4 +27,3 @@ def deleteCompletedCarpool():
             completedcarpool.delete()
     return
 
-# 아래에 여러분의 기능을 구현해주세요...화이팅!
