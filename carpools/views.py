@@ -54,7 +54,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view 
 from .serializers import CarpoolSerializer
 
-@api_view)['GET']
+@api_view(['GET'])
 def carpool_list(request):
     carpools = Carpool.objects.all()
     serializer = CarpoolSerializer(carpools, many = True)
