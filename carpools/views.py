@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from django.utils import timezone
 
 from .models import Carpool, CompletedCarpool, Caution
-
+from django.views import View
+from .serializers import CarpoolSerializer
 
 import datetime
 
@@ -28,3 +30,20 @@ def deleteCompletedCarpool():
     return
 
 # 아래에 여러분의 기능을 구현해주세요...화이팅!
+class CarpoolListView(APIView):
+    def get_queryset(self):
+        now = timezone.now()
+        carpools = Carpool.objects.all()
+        for carpool in carpools:
+            if (now - carpool.created_at).days >= 2 and not carpool.end_carpool:
+                carpool.end_carpool = True
+                carpool.save()
+        return carpools.filter(end_carpool=False)
+    
+    def get(sef, request):
+        #end_carpool이 False인 카풀만 조회
+        active_carpools = self.get_queryset()
+        serializer = CarpoolSerializer(active_carpools, many = True)
+        #many = True 는 serialize 시 여러 객체 처리할 것을 나타냅니다.
+        #get_queryset 메서드가 여러 Carpool객체를 반환하기 때문에 ->객체 목록을 serialize 가능
+        return Response(serializer.data)
