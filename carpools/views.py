@@ -47,3 +47,15 @@ class CarpoolListView(APIView):
         #many = True 는 serialize 시 여러 객체 처리할 것을 나타냅니다.
         #get_queryset 메서드가 여러 Carpool객체를 반환하기 때문에 ->객체 목록을 serialize 가능
         return Response(serializer.data)
+
+
+#목록 전체 보기
+from rest_framework.response import Response
+from rest_framework.decorators import api_view 
+from .serializers import CarpoolSerializer
+
+@api_view)['GET']
+def carpool_list(request):
+    carpools = Carpool.objects.all()
+    serializer = CarpoolSerializer(carpools, many = True)
+    return Response({"carpools": serializer.data})
