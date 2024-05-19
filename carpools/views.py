@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .models import Carpool, CompletedCarpool, Caution
 
+from .serializers import CautionSerializer
 
 import datetime
 
@@ -27,3 +29,15 @@ def deleteCompletedCarpool():
             completedcarpool.delete()
     return
 
+# 로딩창 주의사항을 랜덤으로 띄웁니다.
+import random
+
+class RandomCautionView(APIView):
+    def get(self, request):
+        count = Caution.objects.count()
+        if count == 0:
+            return Response({"message": "No cautions available."}, status=404)
+        random_idx = random.randint(0, count - 1)
+        caution = Caution.objects.all()[random_idx]
+        serializer = CautionSerializer(caution)
+        return Response(serializer.data)
