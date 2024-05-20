@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -35,37 +35,18 @@ def deleteCompletedCarpool():
 
 #48시간 지난 카풀은 제외하고 보여주기
 class CarpoolListView(APIView):
-    def get_queryset(self):
-        now = timezone.now()
-        
-        Carpool.objects.filter(created_at__lt=now - datetime.timedelta(days=2)).update(end_carpool=True)
-        return Carpool.objects.filter(end_carpool=False)
-    
     def get(self, request):
-        #end_carpool이 False인 카풀만 조회
-        active_carpools = self.get_queryset()
+        now = timezone.now()
+        #48시간 이내에 생성된 카풀만 조회
+        active_carpools = Carpool.objects.filter(end_carpool=False, created_at__gte=now - datetime.timedelta(days=2))
         serializer = CarpoolSerializer(active_carpools, many=True)
-        #many=True 는 serialize 시 여러 객체 처리할 것을 나타냅니다.
-        #get_queryset 메서드가 여러 Carpool객체를 반환하기 때문에 ->객체 목록을 serialize 가능
         return Response(serializer.data)
-
-
-#목록 전체 보기
-
-@api_view(['GET'])
-def carpool_list(request):
-    carpools = Carpool.objects.all()
-    serializer = CarpoolSerializer(carpools, many = True)
-    return Response({"carpools": serializer.data})
+    
 
 #카풀 상세 보기
 
 @api_view(['GET'])
 def carpool_detail(request, pk):
-    try:
-        carpool = Carpool.objects.get(pk = pk)
-    except Carpool.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    
+    carpool = get_object_or_404(Carpool, pk=pk)
     serializer = CarpoolDetailSerializer(carpool)
     return Response(serializer.data)
