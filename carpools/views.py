@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Carpool, CompletedCarpool, Caution
-
-from .serializers import CautionSerializer
+from .serializers import *
 
 import datetime
 
@@ -41,3 +43,32 @@ class RandomCautionView(APIView):
         caution = Caution.objects.all()[random_idx]
         serializer = CautionSerializer(caution)
         return Response(serializer.data)
+    
+# 카풀 목록 필터링(목적, 성별, 경로, 인워느 가격, 날짜) 기능입니다.
+@api_view(['POST'])
+def filter_carpools(request):
+    filters = request.data
+
+    carpools = Carpool.objects.all()
+
+    if filters.get('type'):
+        carpools = carpools.filter(type=filters['type'])
+    if filters.get('client_gender'):
+        carpools = carpools.filter(client_gender=filters['client_gender'])
+    if filters.get('dept'):
+        carpools = carpools.filter(dept=filters['dept'])
+    if filters.get('dest'):
+        carpools = carpools.filter(dest=filters['dest'])
+    if filters.get('min_member'):
+        carpools = carpools.filter(member__gte=filters['min_member'])
+    if filters.get('max_member'):
+        carpools = carpools.filter(member__lte=filters['max_member'])
+    if filters.get('min_price'):
+        carpools = carpools.filter(price__gte=filters['min_price'])
+    if filters.get('max_price'):
+        carpools = carpools.filter(price__lte=filters['max_price'])
+    if filters.get('carpool_date'):
+        carpools = carpools.filter(carpool_date__date=filters['carpool_date'])
+
+    serializer = CarpoolSerializer(carpools, many=True)
+    return Response({'carpools': serializer.data})
