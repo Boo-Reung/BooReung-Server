@@ -35,19 +35,21 @@ def deleteCompletedCarpool():
 #프론트에서 json 형태로 정보를 받은 후 그 데이터들을 db에 저장하는 기능
 
 #카풀 주최하기
-def post(self, request):
-    serializer=Carpool(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response({"message": "carpool created successfully"}, status=status.HTTP_200_OK)
-    else:
-        return Response({"message": "carpool created failed"}, status=status.HTTP_400_BAD_REQUEST)
+class PostAPIView(APIView):
+    def post(self, request):
+        serializer=Carpool(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "carpool created successfully"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "carpool created failed"}, status=status.HTTP_400_BAD_REQUEST)
         
 #성사된 카풀 정보 입력
-def post(self, request):
-    serializer=InfoSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response({"message": "completed carpool info created success"}, status=status.HTTP_200_OK)
-    else:
-        return Response({"message": "completed carpool info created failed"}, status=status.HTTP_400_BAD_REQUEST)
+class CompletedAPIView(APIView):
+    def post(self, request):
+        serializer=InfoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "completed carpool info created success"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"message": "completed carpool info created failed"}, status=status.HTTP_400_BAD_REQUEST)
