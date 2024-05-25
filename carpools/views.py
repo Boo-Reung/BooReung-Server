@@ -53,12 +53,21 @@ def filter_carpools(request):
 
     if filters.get('type'):
         carpools = carpools.filter(type=filters['type'])
+
+        if filters['type'] == '통학':
+            if filters.get('dept'):
+                carpools = carpools.filter(dept=filters['dept'])
+            if filters.get('dest'):
+                carpools = carpools.filter(dest=filters['dest'])
+        elif filters['type'] == '여행':
+            if filters.get('dept'):
+                carpools = carpools.filter(dept__contains=filters['dept'])
+            if filters.get('dest'):
+                carpools = carpools.filter(dest__contains=filters['dest'])
+
+    # 나머지 필터링 조건 적용
     if filters.get('client_gender'):
         carpools = carpools.filter(client_gender=filters['client_gender'])
-    if filters.get('dept'):
-        carpools = carpools.filter(dept=filters['dept'])
-    if filters.get('dest'):
-        carpools = carpools.filter(dest=filters['dest'])
     if filters.get('min_member'):
         carpools = carpools.filter(member__gte=filters['min_member'])
     if filters.get('max_member'):
