@@ -6,7 +6,7 @@ class CarpoolSerializer(serializers.ModelSerializer):
         model = Carpool
         fields = [
             'id', 'title', 'type', 'client_gender', 'dept', 'dest', 
-            'member', 'price', 'created_at', 'end_carpool', 'carpool_date'
+            'member', 'price', 'created_at', 'carpool_date'
             ]
 
 class CarpoolDetailSerializer(serializers.ModelSerializer):
@@ -15,5 +15,5 @@ class CarpoolDetailSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'post_num', 'host_name', 'title', 'type', 'client_gender',
             'host_gender', 'dept', 'dest', 'member', 'price', 'car_info',
-            'content', 'open_kakao', 'created_at', 'end_carpool', 'carpool_date'
+            'content', 'open_kakao', 'created_at', 'carpool_date'
         ]
