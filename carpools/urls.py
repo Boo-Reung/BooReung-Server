@@ -1,14 +1,13 @@
 from django.contrib import admin
 from django.urls import path
-from carpools import views
-
+from .views import *
 app_names = 'carpools'
 
 urlpatterns = [
-    path('[POST1]기본주소URL/',views.PostAPIView, name='PostAPIView'),
-    path('[POST2]기본주소URL/',views.CompletedAPIView, name='CompletedAPIView'),
+    path('post1/',PostAPIView.as_view(), name='PostAPIView'),
+    path('post2/' ,CompletedAPIView.as_view(), name='CompletedAPIView'),
 ]
 
 
-#[POST1]: 카풀 주최하기 주소
-#[POST2]: 성사된 카풀 정보 입력 주소
+#post1/: 카풀 주최하기 주소
+#post2/: 성사된 카풀 정보 입력 주소

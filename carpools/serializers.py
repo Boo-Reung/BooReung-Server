@@ -1,7 +1,7 @@
 from .models import Carpool, CompletedCarpool, Caution
 from rest_framework import serializers
 #성사된 카풀 정보 입력
-class InfoSerializer(serializers.Serializer):
+class InfoSerializer(serializers.ModelSerializer):
     client_name=serializers.CharField(max_length=10)
     student_num=serializers.CharField(max_length=9)
     phone_num=serializers.CharField(max_length=11)
@@ -10,10 +10,14 @@ class InfoSerializer(serializers.Serializer):
     host_phone_num=serializers.CharField(max_length=11)
     car_info=serializers.CharField(max_length=50)
     carpool_date=serializers.DateTimeField()
+    class Meta:
+        model = CompletedCarpool
+        fields = '__all__'
+
 
 
 #카풀 주최하기
-class Carpool(serializers.Serializer):
+class Carpool(serializers.ModelSerializer):
     post_num = serializers.IntegerField()
     host_name = serializers.CharField(max_length=255)
     title = serializers.CharField(max_length=255)
@@ -27,6 +31,7 @@ class Carpool(serializers.Serializer):
     car_info = serializers.CharField(max_length=255)
     content = serializers.CharField()
     open_kakao = serializers.CharField()
-    created_at = serializers.DateTimeField(auto_now_add=True)
-    end_carpool = serializers.BooleanField(default=False)
     carpool_date = serializers.DateTimeField()
+    class Meta:
+        model = Carpool
+        fields = '__all__'
