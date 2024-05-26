@@ -7,5 +7,5 @@ app_names = 'carpools'
 
 urlpatterns = [
     path('full_list/', CarpoolListView.as_view(), name = 'carpool_list_48hours'),
-    path('<int:pk>/detail/', views.carpool_detail, name = 'carpool_detail'),
+    path('detail/<int:pk>/', views.carpool_detail, name = 'carpool_detail'),
 ]
