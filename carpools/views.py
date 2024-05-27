@@ -51,7 +51,7 @@ def filter_carpools(request):
 
     carpools = Carpool.objects.all()
 
-    if filters.get('type'):
+    if filters.get('type') != 'null':
         carpools = carpools.filter(type=filters['type'])
 
         if filters['type'] == '통학':
