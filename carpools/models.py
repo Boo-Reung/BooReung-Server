@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 
 class Carpool(models.Model):
-    post_num = models.IntegerField()
+    post_num = models.IntegerField(null=True, blank=True)
     host_name = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     type = models.CharField(max_length=255)
