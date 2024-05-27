@@ -148,7 +148,33 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Apscheduler 설정
-APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
+# APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
 
-SCHEDULER_DEFAULT = True
+# SCHEDULER_DEFAULT = True
 
+##CORS
+# CORS_ORIGIN_WHITELIST = []
+CORS_ORIGIN_ALLOW_ALL=True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    #만약 허용해야할 추가적인 헤더키가 있다면(사용자정의 키) 여기에 추가하면 됩니다.
+)
+
+CSRF_TRUSTED_ORIGINS = ['https://nkey18.pythonanywhere.com']
