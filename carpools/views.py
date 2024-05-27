@@ -55,28 +55,28 @@ def filter_carpools(request):
         carpools = carpools.filter(type=filters['type'])
 
         if filters['type'] == '통학':
-            if filters.get('dept'):
+            if filters.get('dept') != 'null':
                 carpools = carpools.filter(dept=filters['dept'])
-            if filters.get('dest'):
+            if filters.get('dest') != 'null':
                 carpools = carpools.filter(dest=filters['dest'])
         elif filters['type'] == '여행':
-            if filters.get('dept'):
+            if filters.get('dept') != 'null':
                 carpools = carpools.filter(dept__contains=filters['dept'])
-            if filters.get('dest'):
+            if filters.get('dest') != 'null':
                 carpools = carpools.filter(dest__contains=filters['dest'])
 
     # 나머지 필터링 조건 적용
-    if filters.get('client_gender'):
+    if filters.get('client_gender') != 'null':
         carpools = carpools.filter(client_gender=filters['client_gender'])
-    if filters.get('min_member'):
+    if filters.get('min_member') != 'null':
         carpools = carpools.filter(member__gte=filters['min_member'])
-    if filters.get('max_member'):
+    if filters.get('max_member') != 'null':
         carpools = carpools.filter(member__lte=filters['max_member'])
-    if filters.get('min_price'):
+    if filters.get('min_price') != 'null':
         carpools = carpools.filter(price__gte=filters['min_price'])
-    if filters.get('max_price'):
+    if filters.get('max_price') != 'null':
         carpools = carpools.filter(price__lte=filters['max_price'])
-    if filters.get('carpool_date'):
+    if filters.get('carpool_date') != 'null':
         carpools = carpools.filter(carpool_date__date=filters['carpool_date'])
 
     serializer = CarpoolSerializer(carpools, many=True)
