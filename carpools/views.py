@@ -1,8 +1,12 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Carpool, CompletedCarpool, Caution
-
+from .serializers import *
 
 import datetime
 
@@ -27,4 +31,53 @@ def deleteCompletedCarpool():
             completedcarpool.delete()
     return
 
-# 아래에 여러분의 기능을 구현해주세요...화이팅!
+# 로딩창 주의사항을 랜덤으로 띄웁니다.
+import random
+
+class RandomCautionView(APIView):
+    def get(self, request):
+        count = Caution.objects.count()
+        if count == 0:
+            return Response({"message": "No cautions available."}, status=404)
+        random_idx = random.randint(0, count - 1)
+        caution = Caution.objects.all()[random_idx]
+        serializer = CautionSerializer(caution)
+        return Response(serializer.data)
+    
+# 카풀 목록 필터링(목적, 성별, 경로, 인워느 가격, 날짜) 기능입니다.
+@api_view(['POST'])
+def filter_carpools(request):
+    filters = request.data
+
+    carpools = Carpool.objects.all()
+
+    if filters.get('type'):
+        carpools = carpools.filter(type=filters['type'])
+
+        if filters['type'] == '통학':
+            if filters.get('dept'):
+                carpools = carpools.filter(dept=filters['dept'])
+            if filters.get('dest'):
+                carpools = carpools.filter(dest=filters['dest'])
+        elif filters['type'] == '여행':
+            if filters.get('dept'):
+                carpools = carpools.filter(dept__contains=filters['dept'])
+            if filters.get('dest'):
+                carpools = carpools.filter(dest__contains=filters['dest'])
+
+    # 나머지 필터링 조건 적용
+    if filters.get('client_gender'):
+        carpools = carpools.filter(client_gender=filters['client_gender'])
+    if filters.get('min_member'):
+        carpools = carpools.filter(member__gte=filters['min_member'])
+    if filters.get('max_member'):
+        carpools = carpools.filter(member__lte=filters['max_member'])
+    if filters.get('min_price'):
+        carpools = carpools.filter(price__gte=filters['min_price'])
+    if filters.get('max_price'):
+        carpools = carpools.filter(price__lte=filters['max_price'])
+    if filters.get('carpool_date'):
+        carpools = carpools.filter(carpool_date__date=filters['carpool_date'])
+
+    serializer = CarpoolSerializer(carpools, many=True)
+    return Response({'carpools': serializer.data})
