@@ -42,7 +42,7 @@ class CarpoolListView(APIView):
         #carpool_date가 현재 날짜보다 이후인 카풀만 필터링
         active_carpools = Carpool.objects.filter(carpool_date__gt=now)
         serializer = CarpoolListSerializer(active_carpools, many=True)
-        return Response(serializer.data)
+        return Response({'carpools': serializer.data})
     
 
 #카풀 상세 보기
