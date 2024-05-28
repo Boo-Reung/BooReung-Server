@@ -10,17 +10,6 @@ from .serializers import CarpoolSerializer, CarpoolDetailSerializer
 
 import datetime
 
-# 매일 자정마다 2일이 지난 카풀의 end_carpool field 값을 True로 초기화합니다.
-def blockCarpool():
-    now = datetime.datetime.now()
-    carpools = Carpool.objects.all()
-    for carpool in carpools:
-        diff = now - carpool.created_at
-        if diff.days >= 2:
-            carpool.end_carpool = True
-            carpool.save()
-    return
-
 # 매일 자정마다 30일이 지난 완료된 카풀을 db에서 삭제합니다.
 def deleteCompletedCarpool():
     now = datetime.datetime.now()
