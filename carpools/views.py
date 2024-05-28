@@ -6,16 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 from .models import Carpool, CompletedCarpool, Caution
-from django.views import View
-from .serializers import CarpoolSerializer, CarpoolDetailSerializer
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-
-from .models import Carpool, CompletedCarpool, Caution
 from .serializers import *
 
 
