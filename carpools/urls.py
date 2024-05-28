@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import CarpoolListView
+from .views import CarpoolListView, carpool_detail
 from . import views
 
 app_names = 'carpools'

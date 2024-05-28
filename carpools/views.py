@@ -37,8 +37,8 @@ def deleteCompletedCarpool():
 class CarpoolListView(APIView):
     def get(self, request):
         now = timezone.now()
-        #end_carpool이 False인 카풀만 조회
-        active_carpools = Carpool.objects.filter(end_carpool=False)
+        #carpool_date가 현재 날짜보다 이후인 카풀만 필터링
+        active_carpools = Carpool.objects.filter(carpool_date__gt=now)
         serializer = CarpoolSerializer(active_carpools, many=True)
         return Response(serializer.data)
     
