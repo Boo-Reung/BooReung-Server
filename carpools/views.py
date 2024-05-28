@@ -1,5 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
 from rest_framework.views import APIView
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+from .models import Carpool, CompletedCarpool, Caution
+from django.views import View
+from .serializers import CarpoolSerializer, CarpoolDetailSerializer
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,6 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import Carpool, CompletedCarpool, Caution
 from .serializers import *
+
 
 import datetime
 
@@ -18,7 +28,7 @@ def blockCarpool():
     for carpool in carpools:
         diff = now - carpool.created_at
         if diff.days >= 2:
-            carpool.end_carpool == True
+            carpool.end_carpool = True
             carpool.save()
     return
 
@@ -33,6 +43,24 @@ def deleteCompletedCarpool():
     return
 
 # 아래에 여러분의 기능을 구현해주세요...화이팅!
+
+#48시간 지난 카풀은 제외하고 보여주기
+class CarpoolListView(APIView):
+    def get(self, request):
+        now = timezone.now()
+        #carpool_date가 현재 날짜보다 이후인 카풀만 필터링
+        active_carpools = Carpool.objects.filter(carpool_date__gt=now)
+        serializer = CarpoolSerializer(active_carpools, many=True)
+        return Response(serializer.data)
+    
+
+#카풀 상세 보기
+
+@api_view(['GET'])
+def carpool_detail(request, pk):
+    carpool = get_object_or_404(Carpool, pk=pk)
+    serializer = CarpoolDetailSerializer(carpool)
+    return Response(serializer.data)
 
 #프론트에서 json 형태로 정보를 받은 후 그 데이터들을 db에 저장하는 기능
 
