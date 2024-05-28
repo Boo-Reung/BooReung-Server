@@ -151,10 +151,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# Apscheduler 설정
-APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
-
-SCHEDULER_DEFAULT = True
 # APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
 
 # SCHEDULER_DEFAULT = True
