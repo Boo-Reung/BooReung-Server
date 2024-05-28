@@ -41,7 +41,7 @@ class CarpoolListView(APIView):
         now = timezone.now()
         #carpool_date가 현재 날짜보다 이후인 카풀만 필터링
         active_carpools = Carpool.objects.filter(carpool_date__gt=now)
-        serializer = CarpoolSerializer(active_carpools, many=True)
+        serializer = CarpoolListSerializer(active_carpools, many=True)
         return Response(serializer.data)
     
 
@@ -58,7 +58,7 @@ def carpool_detail(request, pk):
 #카풀 주최하기
 class PostAPIView(APIView):
     def post(self, request):
-        serializer=Carpool(data=request.data)
+        serializer=CarpoolCreateSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "carpool created successfully"}, status=status.HTTP_200_OK)

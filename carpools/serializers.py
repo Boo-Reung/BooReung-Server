@@ -2,7 +2,7 @@ from .models import Carpool, CompletedCarpool, Caution
 from rest_framework import serializers
 
 
-class CarpoolSerializer(serializers.ModelSerializer):
+class CarpoolListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Carpool
         fields = [
@@ -28,7 +28,7 @@ class InfoSerializer(serializers.ModelSerializer):
 
 
 #카풀 주최하기
-class Carpool(serializers.ModelSerializer):
+class CarpoolCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Carpool
         fields = '__all__'
