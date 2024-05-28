@@ -41,6 +41,9 @@ SECRET_KEY = get_secret("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+ALLOWED_HOSTS = []
 DEBUG = False
 
 ALLOWED_HOSTS = ['*', '.pythonanywhere.com']
@@ -57,6 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_apscheduler',
     'corsheaders',
     # 'django_apscheduler',
     'accounts',
@@ -150,6 +154,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Apscheduler 설정
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
+
+SCHEDULER_DEFAULT = True
 # APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"  # Default
 
 # SCHEDULER_DEFAULT = True

@@ -140,7 +140,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-boovenv
 
 # Spyder project settings
 .spyderproject
