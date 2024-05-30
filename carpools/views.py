@@ -90,6 +90,7 @@ class RandomCautionView(APIView):
 # 카풀 목록 필터링(목적, 성별, 경로, 인워느 가격, 날짜) 기능입니다.
 @api_view(['POST'])
 def filter_carpools(request):
+    now = datetime.datetime.now()
     filters = request.data
 
     carpools = Carpool.objects.all()
@@ -121,6 +122,8 @@ def filter_carpools(request):
         carpools = carpools.filter(price__lte=filters['max_price'])
     if filters.get('carpool_date'):
         carpools = carpools.filter(carpool_date__gt=filters['carpool_date'])
+    else:
+        carpools = carpools.filter(carpool_date__gt=now)
 
     serializer = CarpoolSerializer(carpools, many=True)
     return Response({'carpools': serializer.data})
