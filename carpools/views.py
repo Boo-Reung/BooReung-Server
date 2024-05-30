@@ -120,7 +120,7 @@ def filter_carpools(request):
     if filters.get('max_price'):
         carpools = carpools.filter(price__lte=filters['max_price'])
     if filters.get('carpool_date'):
-        carpools = carpools.filter(carpool_date__date=filters['carpool_date'])
+        carpools = carpools.filter(carpool_date__gt=filters['carpool_date'])
 
     serializer = CarpoolSerializer(carpools, many=True)
     return Response({'carpools': serializer.data})
